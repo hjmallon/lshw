@@ -4,6 +4,7 @@ VERSION?= $(shell git describe --tags --long | cut -d - -f 1,2 | tr - .)
 
 SQLITE?=0
 ZLIB?=0
+JSONC?=0
 
 DESTDIR?=/
 PREFIX?=/usr
@@ -19,6 +20,7 @@ export MANDIR
 export DATADIR
 export SQLITE
 export ZLIB
+export JSONC
 
 CXX?=$(CROSS_COMPILE)c++
 INCLUDES=-I./core/
@@ -29,6 +31,9 @@ ifeq ($(SQLITE), 1)
 endif
 ifeq ($(ZLIB), 1)
 	CXXFLAGS+= -DZLIB $(shell pkg-config --cflags zlib)
+endif
+ifeq ($(JSONC), 1)
+	CXXFLAGS+= -DJSONC $(shell pkg-config --cflags json-c)
 endif
 LDFLAGS+=-L./core/ -g
 ifneq ($(shell $(LD) --help 2| grep -- --as-needed), )
@@ -41,6 +46,9 @@ ifeq ($(SQLITE), 1)
 endif
 ifeq ($(ZLIB), 1)
 	LIBS+= $(shell pkg-config --libs zlib)
+endif
+ifeq ($(JSONC), 1)
+	LIBS+= $(shell pkg-config --libs json-c)
 endif
 
 export CXXFLAGS
@@ -130,7 +138,7 @@ install-gui: gui
 	$(INSTALL) -d -m 0755 $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)/ui
 	$(INSTALL) -m 0644 gui/*.ui $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)/ui
 	$(INSTALL) -m 0644 gui/artwork/*.svg $(DESTDIR)/$(DATADIR)/$(PACKAGENAME)/artwork
-	
+
 clean:
 	rm -f $(PACKAGENAME).o $(PACKAGENAME) $(PACKAGENAME)-static $(PACKAGENAME)-compressed
 	rm -f $(addsuffix .gz,$(DATAFILES))
