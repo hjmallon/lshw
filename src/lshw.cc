@@ -94,6 +94,7 @@ char **argv)
   disable("output:quiet");
   disable("output:sanitize");
   disable("output:numeric");
+  disable("output:list");
   enable("output:time");
 
 // define some aliases for nodes classes

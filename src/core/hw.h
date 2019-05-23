@@ -4,6 +4,10 @@
 #include <string>
 #include <vector>
 
+#ifdef JSONC
+#include <json-c/json.h>
+#endif
+
 using namespace std;
 
 namespace hw
@@ -224,6 +228,9 @@ class hwNode
     void fixInconsistencies();
 
     string asXML(unsigned level = 0);
+#ifdef JSONC
+    json_object* asJSONObj(unsigned level);
+#endif
     string asJSON(unsigned level = 0);
     string asString();
 

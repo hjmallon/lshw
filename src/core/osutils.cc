@@ -496,6 +496,7 @@ string escape(const string & s)
   return result;
 }
 
+#ifndef JSONC
 string escapeJSON(const string & s)
 {
   string result = "";
@@ -521,6 +522,7 @@ string escapeJSON(const string & s)
 
   return result;
 }
+#endif
 
 string escapecomment(const string & s)
 {
